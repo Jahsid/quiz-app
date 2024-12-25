@@ -1,25 +1,49 @@
 import { Card, CardContent, Chip } from "@mui/material";
+import PropTypes from "prop-types";
 
-const ProgressIndicator = () => {
+const ProgressIndicator = ({ currentQuestionIndex, totalQuestions }) => {
+  const progress = currentQuestionIndex + 1;
+
+  const getChipStyles = (index) => {
+    if (index < currentQuestionIndex) {
+      // Visited
+      return { backgroundColor: "#a8bcfc", color: "white" };
+    } else if (index === currentQuestionIndex) {
+      // Current
+      return { backgroundColor: "#fea8af", color: "white" };
+    } else {
+      // Unvisited
+      return { backgroundColor: "#c3c2c2", color: "black" };
+    }
+  };
+
   return (
     <div className="w-[250px]">
       <Card variant="outlined" className="shadow-lg h-[650px]">
         <CardContent>
           <div className="flex justify-between">
-            <p>Question 1/5</p>
+            <p>Question {progress}/{totalQuestions}</p>
             <p>Need Help?</p>
           </div>
           <div className="flex justify-center mt-8">
-            <Chip label="1" color="success" className="mr-5" />
-            <Chip label="2" color="primary" className="mr-5" />
-            <Chip label="3" color="primary" className="mr-5" />
-            <Chip label="4" color="primary" className="mr-5" />
-            <Chip label="5" color="primary" />
+            {Array.from({ length: totalQuestions }, (_, index) => (
+              <Chip 
+                key={index}
+                label={index + 1}
+                style={getChipStyles(index)}
+                className="m-2"
+              />
+            ))}
           </div>
         </CardContent>
       </Card>
     </div>
   );
+};
+
+ProgressIndicator.propTypes = {
+  currentQuestionIndex: PropTypes.number.isRequired,
+  totalQuestions: PropTypes.number.isRequired,
 };
 
 export default ProgressIndicator;

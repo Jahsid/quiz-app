@@ -1,127 +1,127 @@
 import { Button, Card, CardContent } from "@mui/material";
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useState } from "react";
+import PropTypes from "prop-types";
 
-const QuestionCard = () => {
-  const [quizData, setQuizData] = useState(null);
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+const QuestionCard = ({
+  quizData,
+  currentQuestionIndex,
+  handleNext,
+  handlePrev,
+  showExplanation,
+  setShowExplanation,
+}) => {
   const [selectedOption, setSelectedOption] = useState(null);
-  const [showExplanation, setShowExplanation] = useState(false);
-
-  useEffect(() => {
-    const fetchQuizData = async () => {
-      try {
-        const response = await axios.get("http://localhost:5000/questions");
-        setQuizData(response.data);
-      } catch (error) {
-        console.error("Error fetching quiz data", error);
-      }
-    };
-
-    fetchQuizData();
-  }, []);
 
   const handleOptionSelect = (option) => {
     setSelectedOption(option);
-    setShowExplanation(false);
+    setShowExplanation(true);
   };
-
-  const handleNext = () => {
-    if (currentQuestionIndex < quizData.questions.length - 1) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
-      setSelectedOption(null);
-      setShowExplanation(false);
-    }
-  };
-
-  const handlePrev = () => {
-    if (currentQuestionIndex > 0) {
-      setCurrentQuestionIndex(currentQuestionIndex - 1);
-      setSelectedOption(null);
-      setShowExplanation(false);
-    }
-  };
-
-  if (!quizData) {
-    return <div>Loading...</div>;
-  }
 
   const currentQuestion = quizData.questions[currentQuestionIndex];
   const isCorrect = selectedOption === currentQuestion.answer;
 
   return (
     <div>
-      {quizData && (
-        <div className="w-[800px] h-screen">
-          <Card variant="outlined" className="shadow-lg">
-            <CardContent>
-              <h4>Question {currentQuestionIndex + 1}</h4>
-              <p>{currentQuestion.question}</p>
-            </CardContent>
-          </Card>
+      <div className="w-[800px] h-screen">
+        <Card
+          variant="outlined"
+          className="shadow-lg"
+          sx={{
+            borderColor: "#84a7fa",
+            borderRadius: "12px",
+          }}
+        >
+          <CardContent>
+            <h4 className="text-2xl font-bold">
+              Question {currentQuestionIndex + 1}
+            </h4>
+            <p>{currentQuestion.question}</p>
+          </CardContent>
+        </Card>
 
-          {currentQuestion.options.map((option, index) => (
-            <Card
-              variant="outlined"
-              key={index}
-              className="my-5 shadow-lg"
-              style={{
-                backgroundColor:
-                  selectedOption === option
-                    ? isCorrect
-                      ? "green"
-                      : "red"
-                    : "white",
-              }}
-              onClick={() => handleOptionSelect(option)}
-            >
-              <CardContent>{option}</CardContent>
-            </Card>
-          ))}
-          <div className="flex justify-center gap-10 m-4">
-            <Button
-              variant="outlined"
-              onClick={handlePrev}
-              disabled={currentQuestionIndex === 0}
-              sx={{
-                borderColor: "transparent",
-                color: "black",
-                borderRadius: "8px"
-              }}
-              className="shadow-lg"
-            >
-              Prev
-            </Button>
-            <Button
-              variant="outlined"
-              onClick={handleNext}
-              disabled={currentQuestionIndex === quizData.questions.length - 1}
-              sx={{
-                borderColor: "transparent",
-                color: "black",
-                borderRadius: "8px"
-              }}
-              className="shadow-lg"
-            >
-              Next
-            </Button>
-          </div>
-          <Card variant="outlined" className="shadow-lg">
-            <CardContent>
-              <p
-                className="text-2xl font-bold"
-                onClick={() => setShowExplanation(!showExplanation)}
-                style={{ cursor: "pointer" }}
-              >
-                Explanation
-              </p>
-              {showExplanation && <p>{currentQuestion.explanation}</p>}
-            </CardContent>
+        {currentQuestion.options.map((option, index) => (
+          <Card
+            variant="outlined"
+            key={index}
+            className="my-5 shadow-lg"
+            style={{
+              backgroundColor:
+                selectedOption === option
+                  ? isCorrect
+                    ? "green"
+                    : "red"
+                  : "white",
+            }}
+            onClick={() => handleOptionSelect(option)}
+          >
+            <CardContent>{option}</CardContent>
           </Card>
+        ))}
+        <div className="flex justify-center gap-10 m-4">
+          <Button
+            variant="outlined"
+            onClick={handlePrev}
+            disabled={currentQuestionIndex === 0}
+            sx={{
+              borderColor: "transparent",
+              color: "black",
+              borderRadius: "8px",
+              textTransform: "none",
+            }}
+            className="shadow-lg"
+          >
+            Prev
+          </Button>
+          <Button
+            variant="outlined"
+            onClick={handleNext}
+            disabled={currentQuestionIndex === quizData.questions.length - 1}
+            sx={{
+              borderColor: "transparent",
+              color: "black",
+              borderRadius: "8px",
+              textTransform: "none",
+            }}
+            className="shadow-lg"
+          >
+            Next
+          </Button>
         </div>
-      )}
+        <Card variant="outlined" className="shadow-lg">
+          <CardContent>
+            <p
+              className="text-2xl font-bold"
+              onClick={() => setShowExplanation(!showExplanation)}
+              style={{ cursor: "pointer" }}
+            >
+              Explanation
+            </p>
+            {showExplanation && (
+              <p className="mx-2">{currentQuestion.explanation}</p>
+            )}
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
+};
+
+QuestionCard.propTypes = {
+  quizData: PropTypes.shape({
+    questions: PropTypes.arrayOf(
+      PropTypes.shape({
+        question: PropTypes.string.isRequired,
+        options: PropTypes.arrayOf(PropTypes.string).isRequired,
+        answer: PropTypes.string.isRequired,
+        explanation: PropTypes.string.isRequired,
+      })
+    ).isRequired,
+  }).isRequired,
+  currentQuestionIndex: PropTypes.number.isRequired,
+  handleNext: PropTypes.func.isRequired,
+  handlePrev: PropTypes.func.isRequired,
+  showExplanation: PropTypes.bool.isRequired,
+  setShowExplanation: PropTypes.func.isRequired,
 };
 
 export default QuestionCard;
