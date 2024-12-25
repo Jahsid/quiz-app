@@ -1,7 +1,7 @@
 const QuizHeader = () => {
   return (
     <h1 className='text-3xl text-center m-5'>
-        Quiz Title
+        Quiz of the Day
     </h1>
   )
 }

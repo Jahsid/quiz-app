@@ -22,13 +22,13 @@ const QuestionCard = ({
 
   return (
     <div>
-      <div className="w-[800px] h-screen">
+      <div className="w-[1050px] h-screen">
         <Card
           variant="outlined"
-          className="shadow-lg"
           sx={{
             borderColor: "#84a7fa",
-            borderRadius: "12px",
+            borderWidth: 3,
+            boxShadow: "none",
           }}
         >
           <CardContent>
@@ -41,9 +41,8 @@ const QuestionCard = ({
 
         {currentQuestion.options.map((option, index) => (
           <Card
-            variant="outlined"
             key={index}
-            className="my-5 shadow-lg"
+            className="my-5"
             style={{
               backgroundColor:
                 selectedOption === option
@@ -66,7 +65,7 @@ const QuestionCard = ({
               borderColor: "transparent",
               color: "black",
               borderRadius: "8px",
-              textTransform: "none",
+              // textTransform: "none",
             }}
             className="shadow-lg"
           >
@@ -80,14 +79,14 @@ const QuestionCard = ({
               borderColor: "transparent",
               color: "black",
               borderRadius: "8px",
-              textTransform: "none",
+              // textTransform: "none",
             }}
             className="shadow-lg"
           >
             Next
           </Button>
         </div>
-        <Card variant="outlined" className="shadow-lg">
+        <Card>
           <CardContent>
             <p
               className="text-2xl font-bold"

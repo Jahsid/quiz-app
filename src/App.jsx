@@ -3,6 +3,8 @@ import QuestionCard from "./components/QuestionCard";
 import ProgressIndicator from "./components/ProgressIndicator";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { ThemeProvider } from "@mui/material";
+import theme from "./styles/theme";
 
 function App() {
   const [quizData, setQuizData] = useState(null);
@@ -41,7 +43,7 @@ function App() {
   }
 
   return (
-    <>
+    <ThemeProvider theme={theme}>
       <div className="App">
         <QuizHeader />
         <div className="container mx-auto flex justify-center gap-5">
@@ -59,7 +61,7 @@ function App() {
           />
         </div>
       </div>
-    </>
+    </ThemeProvider>
   );
 }
 

@@ -18,8 +18,8 @@ const ProgressIndicator = ({ currentQuestionIndex, totalQuestions }) => {
   };
 
   return (
-    <div className="w-[250px]">
-      <Card variant="outlined" className="shadow-lg h-[650px]">
+    <div className="w-[350px]">
+      <Card className="h-[650px]">
         <CardContent>
           <div className="flex justify-between">
             <p>Question {progress}/{totalQuestions}</p>
@@ -31,7 +31,7 @@ const ProgressIndicator = ({ currentQuestionIndex, totalQuestions }) => {
                 key={index}
                 label={index + 1}
                 style={getChipStyles(index)}
-                className="m-2"
+                className="m-5"
               />
             ))}
           </div>
