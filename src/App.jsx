@@ -14,7 +14,8 @@ function App() {
   useEffect(() => {
     const fetchQuizData = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/questions");
+        // const response = await axios.get("http://localhost:5000/questions");
+        const response = await axios.get("https://quiz-app-backend-nw98.onrender.com/questions");
         setQuizData(response.data);
       } catch (error) {
         console.error("Error fetching quiz data", error);
